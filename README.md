@@ -1,7 +1,5 @@
 # DSPy-Helpers
 
-> Coming soon
-
 Useful DSPy Modules
 
 ## IterativeRefiner
