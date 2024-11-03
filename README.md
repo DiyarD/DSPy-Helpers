@@ -36,3 +36,46 @@ refined_result = refiner.forward(parameters = {
 # Output the final refined result
 print("Final refined result:", refined_result.generated_summary)
 ```
+---
+
+## SelfConsistency
+
+A DSPy module that implements self-consistency sampling by generating multiple outputs and selecting the most representative one based on Levenshtein distance.
+
+### Overview
+
+The `SelfConsistency` module improves the reliability of language model outputs by:
+1. Generating multiple responses
+2. Computing normalized Levenshtein distances between all pairs
+3. Selecting the response that is most similar to all other responses
+
+This approach helps filter out potential outliers and select the most "average" or representative response from multiple generations.
+
+### Installation
+
+```bash
+pip install python-Levenshtein  # For string distance calculations
+```
+
+### Usage
+
+```python
+# Define your signature
+class TextGeneration(dspy.Signature):
+    """Simple text generation signature."""
+    context = dspy.InputField()
+    response = dspy.OutputField()
+
+# Create SelfConsistency module
+generator = SelfConsistency(
+    signature=TextGeneration,
+    generations_number=5,  # Number of generations to produce
+    cooldown_between_generations_sec=0  # Optional cooldown between generations
+)
+
+# Use the module
+result = generator(
+    context="What are the key features of Python?"
+)
+print(result.response)
+```
